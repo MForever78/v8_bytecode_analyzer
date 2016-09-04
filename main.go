@@ -26,6 +26,13 @@ func (r Result) String() string {
 	return fmt.Sprintf("%s: %d\n", r.Bytecodes, r.Count)
 }
 
+func check(e error) {
+    if e != nil {
+        log.Fatal(e)
+        panic(e)
+    }
+}
+
 func main() {
 	if len(os.Args) < 3 {
 		fmt.Println("Usage: ./main /path/to/bytecode /path/to/output")
@@ -33,9 +40,7 @@ func main() {
 	}
 
 	file, err := os.Open(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
-	}
+    check(err)
 	defer file.Close()
 
 	dictionary := make(map[string]int)
@@ -77,10 +82,7 @@ func main() {
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-		return
-	}
+    check(scanner.Err())
 
 	result := make([]Result, len(dictionary))
 
@@ -101,12 +103,10 @@ func main() {
 	}
 
 	output, err := os.Create(os.Args[2])
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
+    check(err)
 	defer output.Close()
 
 	w := csv.NewWriter(output)
 	w.WriteAll(records)
+    check(w.Error())
 }
