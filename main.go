@@ -27,10 +27,10 @@ func (r Result) String() string {
 }
 
 func check(e error) {
-    if e != nil {
-        log.Fatal(e)
-        panic(e)
-    }
+	if e != nil {
+		log.Fatal(e)
+		panic(e)
+	}
 }
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
 	}
 
 	file, err := os.Open(os.Args[1])
-    check(err)
+	check(err)
 	defer file.Close()
 
 	dictionary := make(map[string]int)
@@ -82,7 +82,7 @@ func main() {
 		}
 	}
 
-    check(scanner.Err())
+	check(scanner.Err())
 
 	result := make([]Result, len(dictionary))
 
@@ -103,10 +103,10 @@ func main() {
 	}
 
 	output, err := os.Create(os.Args[2])
-    check(err)
+	check(err)
 	defer output.Close()
 
 	w := csv.NewWriter(output)
 	w.WriteAll(records)
-    check(w.Error())
+	check(w.Error())
 }
